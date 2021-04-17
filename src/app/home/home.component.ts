@@ -11,7 +11,7 @@ import { IStudent, ISubject } from '../utils/TypesAndIdentifiers';
 export class HomeComponent implements OnInit {
   studentCount=0;
   subjectsCount=0;
-  loading=true;
+  loading={students:true,subjects:true};
   constructor(
     private studentService:StudentsService,private subjectService:SubjectsService) { }
 
@@ -21,9 +21,19 @@ export class HomeComponent implements OnInit {
   }
 
   getStudentCount():void{
-    this.studentService.students.subscribe((students:IStudent[])=>this.studentCount=students.length);
+    this.studentService.students.subscribe((students:IStudent[])=>{
+      this.studentCount=students.length;
+      this.loading.students=false;
+    });
   }
   getSubjectCount():void{
-    this.subjectService.subjects.subscribe((subjects:ISubject[])=>this.subjectsCount=subjects.length);
+    this.subjectService.subjects.subscribe((subjects:ISubject[])=>{
+      this.subjectsCount=subjects.length;
+      this.loading.subjects=false;
+    });
+  }
+
+  load():boolean{
+    return !this.loading.students && !this.loading.subjects
   }
 }

@@ -1,23 +1,32 @@
 <div class="login-page">
 <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="form">
     <input type="text" placeholder="name" formControlName="name"/>
+
     <input type="email" placeholder="email" formControlName="email"/>
-    <input type="date" formControlName="birthdate"/>
-    <div class="custom-control custom-radio">
+
+    <input type="date" formControlName="dob"/>
+
+      <select name="cars" class="custom-select" formControlName="subjectId">
+        <option disabled selected value>Select Subject</option>
+        <ng-container *ngIf="subjects;else loader">
+          <ng-container *ngFor="let sub of subjects">
+            <option value="{{sub.id}}">{{sub.name}}</option>
+          </ng-container>
+        </ng-container>
+    <ng-template #loader><ngx-skeleton-loader count="{{6}}"></ngx-skeleton-loader></ng-template>
+      </select>
+
+      <div class="custom-control-inline mt-2">Gender:</div>
+      <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" class="custom-control-input" id="male" name="gender" value="male" formControlName="gender">
         <label class="custom-control-label" for="male">Male</label>
       </div>
-      <div class="custom-control custom-radio">
+      <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" class="custom-control-input" id="female" name="gender" value="female"
         formControlName="gender">
         <label class="custom-control-label" for="female">Female</label>
       </div>
-      <select name="cars" class="custom-select" formControlName="subject">
-        <option disabled selected value>Select Subject</option>
-        <option value="volvo">Volvo</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option>
-      </select>
+
       <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="switch1" checked formControlName="isActive">
           <label class="custom-control-label" for="switch1">Active</label>
@@ -31,6 +40,8 @@
           </div>
         </div>
       </div> -->
-    <button type="submit" [disabled]="!studentForm.valid">Submit</button>
+    <button type="submit" [disabled]="!studentForm.valid || isSubmitting">Submit</button>
+    {{studentForm.value|json}}
+
   </form>
 </div>

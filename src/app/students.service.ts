@@ -34,7 +34,7 @@ export class StudentsService {
       ,this.header)
    };
 
-  public deleteStudent(id:string):Observable<IStudent> {
+  public deleteStudent(id:number):Observable<IStudent> {
     return this.http.delete<IStudent>(
       `${serverUrl}/${id}`
       ,this.header)

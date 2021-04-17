@@ -2,6 +2,7 @@
   <div class="jumbotron">
     <h1 class="display-3">Welcome</h1>
     <hr class="my-2" />
+    <ng-container *ngIf="!loading.students && !loading.subjects;else loader">
     <p>Total Students:{{studentCount}}</p>
     <p>Total Subjects:{{subjectsCount}}</p>
     <!-- <p class="lead"> -->
@@ -16,6 +17,10 @@
         >View Students</a
       >
     </div>
+  </ng-container>
+  <ng-template #loader>
+    <ngx-skeleton-loader count="5"></ngx-skeleton-loader>
+  </ng-template>
     <!-- </p> -->
   </div>
 </div>

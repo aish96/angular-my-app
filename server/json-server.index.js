@@ -38,6 +38,10 @@ Object.keys(obj).sort().forEach(function(key) {
 const router = jsonServer.router(objOrdered)
 
 server.use(jsonServer.defaults())
+
+server.use(function(req, res, next){
+  setTimeout(next, 2000);
+});
 server.use(router)
 
 server.listen(port, () => {

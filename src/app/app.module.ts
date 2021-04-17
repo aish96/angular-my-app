@@ -10,6 +10,8 @@ import { AddStudentComponent } from './add-student/add-student.component';
 import { ViewStudentsComponent } from './view-students/view-students.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSkeletonLoaderModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

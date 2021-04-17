@@ -1,48 +1,95 @@
 import { Component, OnInit } from '@angular/core';
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
+import { FormControl } from '@angular/forms';
+import { StudentsService } from '../students.service';
+import { SubjectsService } from '../subjects.service';
+import { IStudent, ISubject } from '../utils/TypesAndIdentifiers';
+import { faEdit,faTrash,faCheck,faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  }
-];
 @Component({
   selector: 'app-view-students',
   templateUrl: './view-students.component.html',
   styleUrls: ['./view-students.component.css']
 })
 export class ViewStudentsComponent implements OnInit {
-  countries = COUNTRIES;
-
-  constructor() { }
+  private students:IStudent[]=[];
+  subjects:ISubject[]=[];
+  selectedSubject = new FormControl("");
+  selectedStudents:IStudent[]=[];
+  loading={students:true,subjects:true};
+ icons ={edit:faEdit,delete:faTrash,yes:faCheck,no:faTimes};
+ 
+  constructor(private studentsService:StudentsService,private subjectsService:SubjectsService) { }
 
   ngOnInit(): void {
+    this.getStudents();
+    this.getSubjects();
+    this.addListenerOnSubjectFilter();
+  }
+  addListenerOnSubjectFilter():void{
+    this.selectedSubject.valueChanges.subscribe(sel=>{
+      console.log(sel)
+      if(sel==="all"){
+        this.selectedStudents=this.students;
+      }else{
+        this.selectedStudents = this.students.filter(stud=>stud.subjectId===sel);
+      }
+    })
+  }
+  getStudents():void{
+    this.loading.students=true;
+    this.studentsService.students.subscribe((studentArr:IStudent[])=>{
+      this.students=studentArr;
+      this.selectedStudents = this.students;
+      this.selectedSubject.setValue("all");
+      this.loading.students=false;
+    });
+  }
+  getSubjects():void{
+    this.loading.subjects=true;
+    this.subjectsService.subjects.subscribe((subArr:ISubject[])=>{
+      this.subjects=subArr;
+      this.loading.subjects=false;
+      this.selectedSubject.setValue("all");
+    });
+  }
+  getSubjectName(subjectId:number):string{
+    let sub= this.subjects.find(ob=>ob.id===+subjectId);
+    return sub!.name;
   }
 
+  onEdit(id:number){
+    let details= this.students.find(stud=>stud.id===id);
+    this.studentsService.updateStudent(details!).subscribe((student)=>{
+      if(student){
+        this.getStudents();
+      }
+    });
+  }
+  onDelete(id:number){
+    this.studentsService.deleteStudent(id).subscribe((student)=>{
+      if(student){
+        this.getStudents();
+      }
+    }); 
+   }
 }
+
+/** Dummy Data
+ * 
+        {
+            "id":"1",
+            "name":"Aishwarya",
+            "email":"a@g.com",
+            "subject":"Math",
+            "gender":"female",
+            "isActive":false
+        },
+        {
+            "id":"2",
+            "name":"Aishwarya",
+            "email":"a@g.com",
+            "subject":"Math",
+            "gender":"female",
+            "isActive":false
+        }
+ */

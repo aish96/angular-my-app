@@ -9,7 +9,8 @@ export interface IStudent {
   email: string;
   gender: Gender;
   isActive:boolean;
-  subject:string;
+  subjectId:number;
+  dob:string;
 }
 
 export interface ISubject{
