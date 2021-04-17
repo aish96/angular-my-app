@@ -8,23 +8,24 @@ const jsonServer = require('json-server')
 
 const server = jsonServer.create()
 const port = 3000
+const path_db = "../server/db/";
 
 let endpoints = []
 let obj = {}
-let files = fs.readdirSync(path.resolve(__dirname, './db/'))
+let files = fs.readdirSync(path.resolve(__dirname, path_db))
 
 console.log('\n');
 
 files.forEach((file) => {
   if (file.indexOf('.json') > -1) {
-    jsonObject = JSON.parse(fs.readFileSync('./db/' + file));
+    jsonObject = JSON.parse(fs.readFileSync((path.resolve(__dirname, path_db,file))));
 
-    if( isJson(fs.readFileSync('./db/' + file))) {
+    if( isJson(fs.readFileSync(path.resolve(__dirname, path_db,file)))) {
       Object.keys(jsonObject).forEach(function(idx) {
            endpoints.push(idx);
       });
       console.log('🗒    JSON file loaded : ' + file);
-      _.extend(obj, require(path.resolve(__dirname, './db/', file)));
+      _.extend(obj, require(path.resolve(__dirname, path_db, file)));
     }
   }
 })
