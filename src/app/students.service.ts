@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IStudent } from './utils/TypesAndIdentifiers';
-
+import { v4 as uuidv4 }  from "uuid";
 const serverUrl ="http://localhost:3000/students";
 
 @Injectable({
@@ -21,6 +21,7 @@ export class StudentsService {
   };
 
   public addStudent(studentDetails:IStudent):Observable<IStudent>{
+    studentDetails.id = uuidv4();
     return this.http.post<IStudent>(
       serverUrl,
       studentDetails
@@ -34,7 +35,7 @@ export class StudentsService {
       ,this.header)
    };
 
-  public deleteStudent(id:number):Observable<IStudent> {
+  public deleteStudent(id:string):Observable<IStudent> {
     return this.http.delete<IStudent>(
       `${serverUrl}/${id}`
       ,this.header)

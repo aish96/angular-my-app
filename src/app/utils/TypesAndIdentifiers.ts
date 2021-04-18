@@ -4,7 +4,7 @@ export enum Gender {
 }
 
 export interface IStudent {
-  id: number;
+  id: string;
   name: string;
   email: string;
   gender: Gender;
@@ -16,4 +16,10 @@ export interface IStudent {
 export interface ISubject{
   id:number;
   name:string;
+}
+
+export enum StudentFormTypes{
+  UPDATE="Update",
+  DELETE="Delete",
+  CREATE="Add"
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HomeComponent } from './home/home.component';
-import { AddStudentComponent } from './add-student/add-student.component';
+import { StudentFormComponent } from './student-form/student-form.component';
 import { ViewStudentsComponent } from './view-students/view-students.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,9 +18,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AppComponent,
     NavBarComponent,
     HomeComponent,
-    AddStudentComponent,
+    StudentFormComponent,
     ViewStudentsComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

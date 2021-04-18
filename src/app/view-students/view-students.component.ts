@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { StudentsService } from '../students.service';
 import { SubjectsService } from '../subjects.service';
-import { IStudent, ISubject } from '../utils/TypesAndIdentifiers';
-import { faEdit,faTrash,faCheck,faTimes } from '@fortawesome/free-solid-svg-icons';
+import { IStudent, ISubject, StudentFormTypes } from '../utils/TypesAndIdentifiers';
+import { faEdit,faTrash,faCheck,faTimes,faPlus } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-view-students',
@@ -16,9 +17,13 @@ export class ViewStudentsComponent implements OnInit {
   selectedSubject = new FormControl("");
   selectedStudents:IStudent[]=[];
   loading={students:true,subjects:true};
- icons ={edit:faEdit,delete:faTrash,yes:faCheck,no:faTimes};
+  selectedStudentsDetails?:IStudent;
+  studentAction?:StudentFormTypes;
+ icons ={edit:faEdit,delete:faTrash,yes:faCheck,no:faTimes,add:faPlus};
  
-  constructor(private studentsService:StudentsService,private subjectsService:SubjectsService) { }
+  constructor(private studentsService:StudentsService,
+    private subjectsService:SubjectsService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.getStudents();
@@ -57,21 +62,21 @@ export class ViewStudentsComponent implements OnInit {
     return sub!.name;
   }
 
-  onEdit(id:number){
-    let details= this.students.find(stud=>stud.id===id);
-    this.studentsService.updateStudent(details!).subscribe((student)=>{
-      if(student){
-        this.getStudents();
-      }
-    });
+  onEdit(content:TemplateRef<any>,student:IStudent){
+    this.selectedStudentsDetails = student;
+    this.studentAction = StudentFormTypes.UPDATE;
+    this.modalService.open(content,{centered:true});
   }
-  onDelete(id:number){
-    this.studentsService.deleteStudent(id).subscribe((student)=>{
-      if(student){
-        this.getStudents();
-      }
-    }); 
-   }
+  onDelete(content:TemplateRef<any>,student:IStudent){
+    this.selectedStudentsDetails = student;
+    this.studentAction = StudentFormTypes.DELETE;
+    this.modalService.open(content,{centered:true});
+  }
+
+  listenToStudentForm():void{
+    this.modalService.dismissAll();
+    this.getStudents();
+  }
 }
 
 /** Dummy Data

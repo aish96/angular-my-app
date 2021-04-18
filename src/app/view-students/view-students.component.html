@@ -1,10 +1,15 @@
 <div class="container p-2">
-  <select class="custom-select mb-3 mt-3" [formControl]="selectedSubject">
-    <option selected value="all">All Subjects</option>
-    <ng-container *ngFor="let subject of subjects">
-      <option value="{{subject.id}}">{{subject.name}}</option>
-    </ng-container>
-  </select>
+  <div class="row  mb-2 m-3">
+    <select class="custom-select col-sm-9" [formControl]="selectedSubject">
+      <option selected value="all">All Subjects</option>
+      <ng-container *ngFor="let subject of subjects">
+        <option value="{{subject.id}}">{{subject.name}}</option>
+      </ng-container>
+    </select>
+    <a class="btn btn-primary ml-3" routerLink="/add-student" role="button">
+      <fa-icon [icon]="icons.add"></fa-icon> Add student
+    </a>
+  </div>
 <table class="table">
   <thead>
   <tr>
@@ -35,10 +40,10 @@
             </td>
             <td>
               <div class="btn-group">
-                <button type="button" class="btn btn-warning" (click)="onEdit(student.id)">
+                <button type="button" class="btn btn-warning" (click)="onEdit(content,student)">
                   <fa-icon [icon]="icons.edit"></fa-icon>
                 </button>
-                <button type="button" class="btn btn-danger" (click)="onDelete(student.id)">
+                <button type="button" class="btn btn-danger" (click)="onDelete(content,student)">
                   <fa-icon [icon]="icons.delete"></fa-icon>
                 </button>
               </div>
@@ -47,8 +52,6 @@
         </ng-container>
         <ng-template #noDataBlock><td attr.colspan="{{8}}">
           Uh oh! No students in the database yet!
-          <a class="btn btn-primary" routerLink="/add-student"
-          role="button">Add Student</a>
         </td></ng-template> 
   </ng-container>
 <ng-template #loader>
@@ -59,3 +62,19 @@
   </tbody>
 </table>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-add-student 
+       [studentDetails]="selectedStudentsDetails"
+       [formType]="studentAction"
+       (eventEmitter)="listenToStudentForm()"
+       ></app-add-student>
+    </div>
+</ng-template>

@@ -1,3 +1,6 @@
 .container {
   background: white;
 }
+.modal-body {
+  background-color: #acc7;
+}
