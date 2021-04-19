@@ -1,3 +1,10 @@
+To Run this project:
+
+1. npm i
+2. In terminal 1, run: ng s --o // run angular in watch mode
+3. In terminal 2, run: npm run start:server //runs the server
+   (Open https://localhost:4200)
+
 # MyApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.7.
